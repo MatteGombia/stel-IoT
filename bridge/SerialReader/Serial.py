@@ -1,5 +1,6 @@
 import serial
 import serial.tools.list_ports
+import json
 
 class SerialReader:
     def __init__(self, id):
@@ -41,13 +42,29 @@ class SerialReader:
 					# data available from the serial port
                     lastchar=self.ser.read(1)
 
+                    self.inbuffer.append(lastchar)
+
                     if lastchar==b'}':
                         print("\nValue received")
-                        thingsBoardClient.send_telemetry(self.id, str(self.inbuffer))
+                        print("Complete buffer: ", str(self.inbuffer))
+
+                        #merge the bytes into a string
+                        data_str = b''.join(self.inbuffer).decode('utf-8')
+
+                        try:
+                            #try deserializing as json
+                            data_dict = json.loads(data_str)
+                            print("Data received as JSON:", data_dict)
+
+                            #send data
+                            thingsBoardClient.send_telemetry(self.id, json.dumps(data_dict))
+
+                        except json.JSONDecodeError as e:
+                            print(f"Error while decoding the JSON: {e}")
+
+                        #reset the buffer for the next transmission
                         self.inbuffer = []
-                    else:
-                        # append
-                        self.inbuffer.append (lastchar)
+                        
 
 if __name__ == '__main__':
 	sr=SerialReader()
