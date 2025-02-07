@@ -17,7 +17,7 @@ class ThingsBoardClient:
 
         self.config = configparser.ConfigParser()
         self.config.read('config.ini')
-        self.base_url = self.config.get("Http","Server", fallback= "http://localhost:8080")
+        self.base_url = self.config.get("Http","Server", fallback= "http://192.168.1.49:8080")
     
     def send_telemetry(self, device, data):
         """

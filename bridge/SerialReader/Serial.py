@@ -3,7 +3,8 @@ import serial.tools.list_ports
 import json
 
 class SerialReader:
-    def __init__(self, id):
+    def __init__(self, id, port):
+        self.portname = port
         self.setupSerial()
         self.id = id
     
@@ -13,19 +14,19 @@ class SerialReader:
 
         print("list of available ports: ")
         ports = serial.tools.list_ports.comports()  
-
+        print("portname: " + self.portname)        
         for port in ports:
             print (port.device)
             print (port.description)
-            if "arduino" in port.description.lower():
-                self.portname = port.device      
+#            if "usb2.0-serial" in port.description.lower():
+#                self.portname = port.device
         try:
             if self.portname is not None:
                 print ("connecting to " + self.portname)
                 self.ser = serial.Serial(self.portname, 9600, timeout=0)
         except:
             self.ser = None
-
+            print("Not Connecting")
 		# self.ser.open()
 
 		# internal input buffer from serial
