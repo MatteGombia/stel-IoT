@@ -12,7 +12,9 @@ class ThingsBoardClient:
             "1.1": "i60Zg6uPxUvxFeiaPOy3",
             "1.2": "b99WddfhzlrJ6QelBFf0",
             "2.1": "8io8PLY1T99qMP6eTP14",
-            "2.2": "2ynVlOLlTpxXpKUVRao5"
+            "2.2": "2ynVlOLlTpxXpKUVRao5",
+            "1": "Z6P7VFvB5op6FvWhgFdS",
+            "2": "LX8h6bpQrgJskyFtcsv5"
             }
 
         self.config = configparser.ConfigParser()
