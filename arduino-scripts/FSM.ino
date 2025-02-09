@@ -5,6 +5,7 @@
 //right_button=MAINTENANCE
 
 #include <ArduinoJson.h>
+#include <math.h>
 
 //States:
 enum State {Occupied, Free, Unusable, Maintenance, Cleaning};
@@ -18,7 +19,7 @@ State iCurrentState;
 unsigned long lastSend = 0;
 unsigned long lastPerception = 0;
 float distance = 0;
-float toilet_paper = 0;
+int toilet_paper = 0;
 
 #define TRIG_PIN (2)
 #define ECHO_PIN (4)
@@ -59,7 +60,7 @@ int detection()
     }
 }
 
-float paper_percentage_detection(){ 
+int paper_percentage_detection(){ 
   digitalWrite(TRIG_PIN_PAPER, LOW);
   delayMicroseconds(2);
   digitalWrite(TRIG_PIN_PAPER, HIGH);
@@ -80,7 +81,7 @@ float paper_percentage_detection(){
   else if(ratio > 1){
     ratio = 1;
   }
-  return ratio * 100; 
+  return (int)round(ratio * 100); 
 }
 
 void sendJSON(State state, float distance, float toilet_paper);
@@ -236,7 +237,7 @@ void loop()
   }
 }
 
-void sendJSON(State state, float distance, float toilet_paper) {
+void sendJSON(State state, float distance, int toilet_paper) {
   // sends the current state in JSON format
   String stateStr = "";
 
