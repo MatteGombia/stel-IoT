@@ -262,7 +262,7 @@ void sendJSON(State state, float distance, float toilet_paper) {
   JsonDocument doc;
   doc["State"] = stateStr;
   doc["Distance"] = distance;
-  doc["Toilet Paper"] = toilet_paper;
+  doc["ToiletPaper"] = toilet_paper;
   serializeJson(doc, Serial);
   Serial.println("");
 }
