@@ -18,6 +18,7 @@ State iCurrentState;
 unsigned long lastSend = 0;
 unsigned long lastPerception = 0;
 float distance = 0;
+float toilet_paper = 0;
 
 #define TRIG_PIN (2)
 #define ECHO_PIN (4)
@@ -29,8 +30,13 @@ float distance = 0;
 #define GREEN_PIN (9)
 #define YELLOW_PIN (11)
 #define THRESHOLD_DIST (50)
-#define PERCEPTION_INTERVAL (100)
+#define PERCEPTION_INTERVAL (100) 
 #define SEND_INTERVAL (1000)
+
+#define TRIG_PIN_PAPER (5) //added
+#define ECHO_PIN_PAPER (6) //added
+#define EMPTY_PAPER (5) //distance from the paper when it's empty
+#define FULL_PAPER (2) //distance from the paper when it's full
 
 int detection()
 {
@@ -53,7 +59,31 @@ int detection()
     }
 }
 
-void sendJSON(State state, float distance);
+float paper_percentage_detection(){ 
+  digitalWrite(TRIG_PIN_PAPER, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG_PIN_PAPER, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN_PAPER, LOW);
+  
+  unsigned long timing = pulseIn(ECHO_PIN_PAPER, HIGH);
+  if (timing == 0) {
+  	return 0;  // No echo received
+  }
+  float paper_distance = (timing * 0.034) / 2;
+  //Serial.print("computed distance");
+  //Serial.println(paper_distance);
+  float ratio = (EMPTY_PAPER - paper_distance) / (EMPTY_PAPER - FULL_PAPER);
+  if(ratio < 0){
+    ratio = 0;
+  }
+  else if(ratio > 1){
+    ratio = 1;
+  }
+  return ratio * 100; 
+}
+
+void sendJSON(State state, float distance, float toilet_paper);
 
 void setup()
 {
@@ -67,6 +97,9 @@ void setup()
   pinMode(MAINT_PIN, INPUT);
   pinMode(CLEAN_PIN, INPUT);
   pinMode(OK_PIN, INPUT);
+
+  pinMode(TRIG_PIN_PAPER, OUTPUT);
+  pinMode(ECHO_PIN_PAPER, INPUT);
   
   digitalWrite(TRIG_PIN, LOW);
   Serial.begin(9600);
@@ -77,6 +110,10 @@ void loop()
   if((millis() - lastPerception) >= PERCEPTION_INTERVAL){
     // read the input and convert it into the input symbol
     Input iInput = (Input)detection();
+    // computation of the paper percentage
+    toilet_paper = paper_percentage_detection();
+    //Serial.print("returned percentage");
+    //Serial.println(toilet_paper);
     lastPerception = millis();
     
     if((digitalRead(WRN_PIN) == HIGH)){
@@ -191,15 +228,15 @@ void loop()
         break;
     }
   }
-    // sending the current state via serial
-    
+
+  // sending the current state via serial
   if((millis()- lastSend) >= SEND_INTERVAL){
-    sendJSON(iCurrentState, distance);
+    sendJSON(iCurrentState, distance, toilet_paper);
     lastSend = millis();
   }
 }
 
-void sendJSON(State state, float distance) {
+void sendJSON(State state, float distance, float toilet_paper) {
   // sends the current state in JSON format
   String stateStr = "";
 
@@ -225,11 +262,7 @@ void sendJSON(State state, float distance) {
   JsonDocument doc;
   doc["State"] = stateStr;
   doc["Distance"] = distance;
+  doc["Toilet Paper"] = toilet_paper;
   serializeJson(doc, Serial);
   Serial.println("");
-  //Serial.print("{\"State\": \"");
-  //Serial.print(stateStr);
-  //Serial.print("\", \"Distance\": \"");
-  //Serial.print(String(distance));
-  //Serial.println("\"}");
 }
