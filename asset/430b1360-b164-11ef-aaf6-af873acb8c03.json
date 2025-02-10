@@ -1,0 +1,54 @@
+{
+  "entityType" : "ASSET",
+  "entity" : {
+    "additionalInfo" : {
+      "description" : ""
+    },
+    "assetProfileId" : {
+      "entityType" : "ASSET_PROFILE",
+      "id" : "2b4ef5b0-b15b-11ef-ad3f-815eda72b584"
+    },
+    "customerId" : {
+      "entityType" : "CUSTOMER",
+      "id" : "db68cbf0-b16b-11ef-aaf6-af873acb8c03"
+    },
+    "externalId" : null,
+    "id" : {
+      "entityType" : "ASSET",
+      "id" : "430b1360-b164-11ef-aaf6-af873acb8c03"
+    },
+    "label" : null,
+    "name" : "Bathroom2",
+    "type" : "default"
+  },
+  "relations" : [ {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "ASSET",
+      "id" : "430b1360-b164-11ef-aaf6-af873acb8c03"
+    },
+    "to" : {
+      "entityType" : "DEVICE",
+      "id" : "4e045f10-b164-11ef-aaf6-af873acb8c03"
+    },
+    "type" : "Contains",
+    "typeGroup" : "COMMON",
+    "version" : 51
+  }, {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "ASSET",
+      "id" : "430b1360-b164-11ef-aaf6-af873acb8c03"
+    },
+    "to" : {
+      "entityType" : "DEVICE",
+      "id" : "58f79040-b164-11ef-aaf6-af873acb8c03"
+    },
+    "type" : "Contains",
+    "typeGroup" : "COMMON",
+    "version" : 52
+  } ],
+  "attributes" : {
+    "SERVER_SCOPE" : [ ]
+  }
+}
