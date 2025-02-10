@@ -14,6 +14,7 @@
 #define POT_PIN A3
 
 #define GET_REQUEST_INTERVAL (500)
+#define DISPLAY_INTERVAL (100) //not used
 
 char ssid[] = SECRET_SSID;
 char pass[] = SECRET_PASS;
@@ -22,6 +23,7 @@ char serverAddress[] = "192.168.0.100";
 int port = 8080;
 
 long lastGet = 0;
+long lastDisplay = 0; //not used
 
 WiFiManager wifiManager(SECRET_SSID, SECRET_PASS, serverAddress, port);
 
@@ -37,6 +39,24 @@ std::map<String, String> ids = { //dict for stalls and bathrooms ids
 };
 
 std::map<String, String> responses; //dict for the http responses 
+std::map<String, String> states = { //dict for the stalls state
+    {"1.1", ""},
+    {"1.2", ""},
+    {"2.1", ""},
+    {"2.2", ""}
+};
+std::map<String, String> toilet_papers = { //dict for the stalls toilet paper percentage 
+    {"1.1", ""},
+    {"1.2", ""},
+    {"2.1", ""},
+    {"2.2", ""}
+};
+std::map<String, String> num_people = { //dict for the number of people in queue for each bathroom
+    {"1", ""},
+    {"2", ""}
+};
+
+void display_info(int potVal, std::map<String, String> num_people, std::map<String, String> states, std::map<String, String> toilet_papers);
 
 void setup() {
   lcd.begin(16, 2);
@@ -59,84 +79,87 @@ void loop() {
       Serial.println(pair.second); 
     }
     lastGet = millis();
-    JsonDocument bath_1;
-    JsonDocument bath_2;
-    const char* people_1;
-    const char* people_2;
-    DeserializationError error = deserializeJson(bath_1, responses["1"]);
 
-    if (error) {
-      Serial.print("Error parsing JSON: ");
-      Serial.println(error.c_str());
-    } else {
-      JsonArray people = bath_1["People"].as<JsonArray>();
-      people_1 = people[0]["value"];
+    //deserializing the number of people in each bathroom from the JSON
+    for (const auto& pair : num_people){
+      JsonDocument doc;
+      DeserializationError error = deserializeJson(doc, responses[pair.first]);
+      if (error) {
+        Serial.print("Error parsing JSON: ");
+        Serial.println(error.c_str());
+      } else {
+        JsonArray people = doc["People"].as<JsonArray>();
+        num_people[pair.first] = people[0]["value"];
+      }
     }
 
-    error = deserializeJson(bath_2, responses["2"]);
-
-    if (error) {
-      Serial.print("Error parsing JSON: ");
-      Serial.println(error.c_str());
-    } else {
-      JsonArray people = bath_2["People"].as<JsonArray>();
-      people_2 = people[0]["value"];
+    //deserializing the State and the Toilet Paper from the JSON
+    for (const auto& pair : states){
+      JsonDocument doc;
+      DeserializationError error = deserializeJson(doc, responses[pair.first]);
+      if (error) {
+        Serial.print("Error parsing JSON: ");
+        Serial.println(error.c_str());
+      } else {
+        JsonArray state = doc["State"].as<JsonArray>();
+        states[pair.first] = state[0]["value"];
+        JsonArray toilet_paper = doc["ToiletPaper"].as<JsonArray>();
+        toilet_papers[pair.first] = toilet_paper[0]["value"];
+      }
     }
 
     //reading from the potentiometer pin
     int potVal = analogRead(POT_PIN);
     printf(potVal);
     Serial.println(potVal);
-    lcd.clear();
-    if(potVal < 256){
-      Serial.println("First Bathroom");
-      Serial.println("First Stall");
-
-      lcd.setCursor(0, 0);
-      lcd.print("1B people:");
-      lcd.setCursor(10, 0);
-      lcd.print(people_1);
-      lcd.setCursor(0,1);
-      lcd.print("1S");
-    }
-    else if(potVal < 512){
-      Serial.println("First Bathroom");
-      Serial.println("Second Stall");
-
-      lcd.setCursor(0, 0);
-      lcd.print("1B people:");
-      lcd.setCursor(10, 0);
-      lcd.print(people_1);
-      //lcd.setCursor(0, 0);
-      //lcd.print("First Bathroom");
-      lcd.setCursor(0,1);
-      lcd.print("2S");
-    }
-    else if(potVal < 768){
-      Serial.println("Second Bathroom");
-      Serial.println("First Stall");
-
-      lcd.setCursor(0, 0);
-      lcd.print("2B people:");
-      lcd.setCursor(10, 0);
-      lcd.print(people_2);
-      //lcd.setCursor(0, 0);
-      //lcd.print("Second Bathroom");
-      lcd.setCursor(0,1);
-      lcd.print("1S");
-    }
-    else{
-      Serial.println("Second Bathroom");
-      Serial.println("Second Stall");
-
-      lcd.setCursor(0, 0);
-      lcd.print("2B people:");
-      lcd.setCursor(10, 0);
-      lcd.print(people_2);
-      //lcd.setCursor(0, 0);
-      //lcd.print("Second Bathroom");
-      lcd.setCursor(0,1);
-      lcd.print("2S");
-    }
+    
+    //display bathrooms/stalls info based on potVal
+    display_info(potVal, num_people, states, toilet_papers);
+    lastDisplay = millis();
   }
+}
+
+void display_info(int potVal, std::map<String, String> num_people, std::map<String, String> states, std::map<String, String> toilet_papers){
+  lcd.clear();
+
+  String state;
+  String people_text;
+  String tp_text;
+  String stall_label;
+
+  if(potVal < 256){
+    people_text = "1B people:" + num_people["1"];
+    stall_label = "1S ";
+    tp_text = " tp:" + toilet_papers["1.1"] + "%";
+    state = states["1.1"].substring(0, min(13 - tp_text.length(), states["1.1"].length()));
+  } 
+  else if(potVal < 512){
+    people_text = "1B people:" + num_people["1"];
+    stall_label = "2S ";
+    tp_text = " tp:" + toilet_papers["1.2"] + "%";
+    state = states["1.2"].substring(0, min(13 - tp_text.length(), states["1.2"].length()));
+  }
+  else if(potVal < 768){
+    people_text = "2B people:" + num_people["2"];
+    stall_label = "1S ";
+    tp_text = " tp:" + toilet_papers["2.1"] + "%";
+    state = states["2.1"].substring(0, min(13 - tp_text.length(), states["2.1"].length()));
+  }
+  else{
+    people_text = "2B people:" + num_people["2"];
+    stall_label = "2S ";
+    tp_text = " tp:" + toilet_papers["2.2"] + "%";
+    state = states["2.2"].substring(0, min(13 - tp_text.length(), states["2.2"].length()));
+  }
+
+  lcd.setCursor(0, 0);
+  lcd.print(people_text);
+
+  lcd.setCursor(0, 1);
+  lcd.print(stall_label);
+  lcd.print(state);
+
+  lcd.setCursor(16 - tp_text.length(), 1);
+  lcd.print(tp_text);
+
 }
