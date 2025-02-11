@@ -1,0 +1,11 @@
+FAN MAX:
+pinctrl FAN_PWM op dl
+
+TEMP: 
+cat /sys/class/thermal/thermal_zone0/temp
+
+TB:
+sudo service thingsboard start
+
+Start Script:
+my-venv/bin/python Controller.py

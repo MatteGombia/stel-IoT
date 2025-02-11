@@ -23,8 +23,8 @@ class YOLO_Detector():
             print("Error: Camera not found")
             exit(1)
 
-        self.cap.set(3, 640)
-        self.cap.set(4, 480)
+        self.cap.set(3, 1280)
+        self.cap.set(4, 720)
 
         # Load model
         self.model = YOLO("best.pt", verbose=True)
@@ -37,7 +37,7 @@ class YOLO_Detector():
                 print("Error: Failed to capture image")
                 break  # Exit the loop if the camera feed fails
 
-            results = self.model.predict(img, verbose=True)
+            results = self.model.predict(img, verbose=True, conf=0.65)
 
             if self.show:
                 annotated_frame = results[0].plot()
@@ -46,21 +46,21 @@ class YOLO_Detector():
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break
 
-            iteration += 1  # Prevent indefinite looping
-            if iteration % 5 == 0:
-                self.cap.release()
-                time.sleep(1)  # Let the camera reset
-                self.cap = cv2.VideoCapture(self.camera)
-            else:
-                time.sleep(1)
-                count_obj = 0
-                for box in results[0].boxes:
-                    count_obj += 1
+            #iteration += 1  # Prevent indefinite looping
+            #if iteration % 5 == 0:
+            #    self.cap.release()
+            #    time.sleep(1)  # Let the camera reset
+            #    self.cap = cv2.VideoCapture(self.camera)
+            #else:
+            time.sleep(1)
+            count_obj = 0
+            for box in results[0].boxes:
+                count_obj += 1
 
-                print(count_obj)
-                    
-                thingsBoardClient.send_telemetry(self.id, "{People: " + str(count_obj) + "}")
-
+            print(count_obj)
+                
+            thingsBoardClient.send_telemetry(self.id, "{People: " + str(count_obj) + "}")
+            #
         self.cap.release()
         cv2.destroyAllWindows()
 

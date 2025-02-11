@@ -14,7 +14,7 @@ class SerialReader:
 
         print("list of available ports: ")
         ports = serial.tools.list_ports.comports()  
-        print("portname: " + self.portname)        
+        print("portname: " + self.portname)    
         for port in ports:
             print (port.device)
             print (port.description)
@@ -24,6 +24,8 @@ class SerialReader:
             if self.portname is not None:
                 print ("connecting to " + self.portname)
                 self.ser = serial.Serial(self.portname, 9600, timeout=0)
+                print()    
+                print()    
         except:
             self.ser = None
             print("Not Connecting")
@@ -47,7 +49,7 @@ class SerialReader:
 
                     if lastchar==b'}':
                         print("\nValue received")
-                        print("Complete buffer: ", str(self.inbuffer))
+                        #print("Complete buffer: ", str(self.inbuffer))
 
                         #merge the bytes into a string
                         data_str = b''.join(self.inbuffer).decode('utf-8')
