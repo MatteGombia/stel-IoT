@@ -1,3 +1,4 @@
+import time
 import serial
 import serial.tools.list_ports
 import json
@@ -9,6 +10,7 @@ class SerialReader:
         self.id = id
     
     def setupSerial(self):
+        print()
 		# open serial port
         self.ser = None
 
@@ -34,7 +36,7 @@ class SerialReader:
 		# internal input buffer from serial
         self.inbuffer = []
 
-    def loop(self, thingsBoardClient):
+    def loop(self, thingsBoardClient, sup, stall):
 		# infinite loop for serial managing
 		#
         while (True):
@@ -59,6 +61,7 @@ class SerialReader:
                             data_dict = json.loads(data_str)
                             print("Data received as JSON:", data_dict)
 
+                            sup.stateStall[stall] = data_dict["State"]
                             #send data
                             thingsBoardClient.send_telemetry(self.id, json.dumps(data_dict))
 
@@ -67,7 +70,6 @@ class SerialReader:
 
                         #reset the buffer for the next transmission
                         self.inbuffer = []
-                        
 
 if __name__ == '__main__':
 	sr=SerialReader()
