@@ -61,7 +61,7 @@ class SerialReader:
                             data_dict = json.loads(data_str)
                             print("Data received as JSON:", data_dict)
 
-                            sup.stateStall[stall] = data_dict["State"]
+                            sup.stateStall[stall-1] = data_dict["State"]
                             #send data
                             thingsBoardClient.send_telemetry(self.id, json.dumps(data_dict))
 
