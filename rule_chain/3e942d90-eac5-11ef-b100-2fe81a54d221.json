@@ -37,6 +37,10 @@
       "toIndex" : 6,
       "type" : "Created"
     }, {
+      "fromIndex" : 1,
+      "toIndex" : 7,
+      "type" : "Created"
+    }, {
       "fromIndex" : 5,
       "toIndex" : 3,
       "type" : "Success"
@@ -241,6 +245,31 @@
       "ruleChainId" : null,
       "singletonMode" : false,
       "type" : "org.thingsboard.rule.engine.transform.TbTransformMsgNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 873,
+        "layoutY" : 196
+      },
+      "configuration" : {
+        "numbersToTemplate" : "3421796539",
+        "smsMessageTemplate" : "Device ${deviceName} is not available",
+        "useSystemSmsSettings" : true,
+        "smsProviderConfiguration" : null
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugMode" : false,
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "9bfd1060-eadd-11ef-9894-2dc07327658c"
+      },
+      "name" : "SMS",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.sms.TbSendSmsNode"
     } ],
     "ruleChainConnections" : null
   },
