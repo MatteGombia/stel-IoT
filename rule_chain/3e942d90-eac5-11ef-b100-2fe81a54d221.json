@@ -131,8 +131,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 1260,
-        "layoutY" : 61
+        "layoutX" : 1344,
+        "layoutY" : 64
       },
       "configuration" : {
         "useSystemSmtpSettings" : false,
@@ -192,8 +192,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 1012,
-        "layoutY" : 69
+        "layoutX" : 1085,
+        "layoutY" : 67
       },
       "configuration" : {
         "fromTemplate" : "info@testmail.org",
@@ -220,8 +220,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 780,
-        "layoutY" : 67
+        "layoutX" : 830,
+        "layoutY" : 68
       },
       "configuration" : {
         "scriptLang" : "TBEL",
