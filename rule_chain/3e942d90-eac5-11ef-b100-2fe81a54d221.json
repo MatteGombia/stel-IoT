@@ -200,7 +200,7 @@
         "toTemplate" : "matteogombia@gmail.com",
         "ccTemplate" : null,
         "bccTemplate" : null,
-        "subjectTemplate" : "Device ${deviceType} is Unavailable",
+        "subjectTemplate" : "Device ${deviceName} is Unavailable",
         "mailBodyType" : "false",
         "bodyTemplate" : "Device ${deviceName} is unavailable"
       },
