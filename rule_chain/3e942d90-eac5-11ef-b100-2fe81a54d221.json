@@ -137,7 +137,7 @@
       "configuration" : {
         "useSystemSmtpSettings" : false,
         "smtpProtocol" : "smtp",
-        "smtpHost" : "smtp.mail.yahoo.com",
+        "smtpHost" : "smtp-relay.sendinblue.com",
         "smtpPort" : 587,
         "timeout" : 10000,
         "enableTls" : false,
@@ -147,8 +147,8 @@
         "proxyPort" : null,
         "proxyUser" : null,
         "proxyPassword" : null,
-        "username" : "matteogombia@gmail.com",
-        "password" : "tenant"
+        "username" : "fjanuar91@gmail.com",
+        "password" : "wYFatZvjkX5qgUT6"
       },
       "configurationVersion" : 0,
       "createdTime" : 0,
