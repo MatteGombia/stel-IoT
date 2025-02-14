@@ -30,12 +30,16 @@
       "type" : "False"
     }, {
       "fromIndex" : 1,
-      "toIndex" : 3,
+      "toIndex" : 4,
       "type" : "Created"
     }, {
       "fromIndex" : 1,
-      "toIndex" : 4,
+      "toIndex" : 5,
       "type" : "Created"
+    }, {
+      "fromIndex" : 5,
+      "toIndex" : 3,
+      "type" : "Success"
     } ],
     "firstNodeIndex" : 0,
     "nodes" : [ {
@@ -123,8 +127,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 865,
-        "layoutY" : 72
+        "layoutX" : 1073,
+        "layoutY" : 64
       },
       "configuration" : {
         "useSystemSmtpSettings" : false,
@@ -140,7 +144,7 @@
         "proxyUser" : null,
         "proxyPassword" : null,
         "username" : "matteogombia@gmail.com",
-        "password" : "Viky!1234"
+        "password" : "tenant"
       },
       "configurationVersion" : 0,
       "createdTime" : 0,
@@ -181,6 +185,34 @@
       "ruleChainId" : null,
       "singletonMode" : false,
       "type" : "org.thingsboard.rule.engine.notification.TbNotificationNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 828,
+        "layoutY" : 64
+      },
+      "configuration" : {
+        "fromTemplate" : "info@testmail.org",
+        "toTemplate" : "matteogombia@gmail.com",
+        "ccTemplate" : null,
+        "bccTemplate" : null,
+        "subjectTemplate" : "Device ${deviceType} is Unavailable",
+        "mailBodyType" : "false",
+        "bodyTemplate" : "Device ${deviceName} is unavailable"
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugMode" : false,
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "f972d300-eaca-11ef-b100-2fe81a54d221"
+      },
+      "name" : "CreationEmail",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.mail.TbMsgToEmailNode"
     } ],
     "ruleChainConnections" : null
   },
