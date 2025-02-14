@@ -34,11 +34,15 @@
       "type" : "Created"
     }, {
       "fromIndex" : 1,
-      "toIndex" : 5,
+      "toIndex" : 6,
       "type" : "Created"
     }, {
       "fromIndex" : 5,
       "toIndex" : 3,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 6,
+      "toIndex" : 5,
       "type" : "Success"
     } ],
     "firstNodeIndex" : 0,
@@ -127,14 +131,14 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 1073,
-        "layoutY" : 64
+        "layoutX" : 1260,
+        "layoutY" : 61
       },
       "configuration" : {
         "useSystemSmtpSettings" : false,
         "smtpProtocol" : "smtp",
-        "smtpHost" : "mymail.brinkster.com",
-        "smtpPort" : 2525,
+        "smtpHost" : "smtp.mail.yahoo.com",
+        "smtpPort" : 587,
         "timeout" : 10000,
         "enableTls" : false,
         "tlsVersion" : "TLSv1.2",
@@ -188,8 +192,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 828,
-        "layoutY" : 64
+        "layoutX" : 1012,
+        "layoutY" : 69
       },
       "configuration" : {
         "fromTemplate" : "info@testmail.org",
@@ -213,6 +217,30 @@
       "ruleChainId" : null,
       "singletonMode" : false,
       "type" : "org.thingsboard.rule.engine.mail.TbMsgToEmailNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 780,
+        "layoutY" : 67
+      },
+      "configuration" : {
+        "scriptLang" : "TBEL",
+        "jsScript" : "return {msg: msg, metadata: metadata, msgType: msgType};",
+        "tbelScript" : "return {msg: msg, metadata: metadata, msgType: msgType};"
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugMode" : false,
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "08d67cb0-ead6-11ef-9894-2dc07327658c"
+      },
+      "name" : "Script",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.transform.TbTransformMsgNode"
     } ],
     "ruleChainConnections" : null
   },
