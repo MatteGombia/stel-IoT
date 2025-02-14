@@ -133,8 +133,8 @@
       "configuration" : {
         "useSystemSmtpSettings" : false,
         "smtpProtocol" : "smtp",
-        "smtpHost" : "smtp.gmail.com",
-        "smtpPort" : 25,
+        "smtpHost" : "mymail.brinkster.com",
+        "smtpPort" : 2525,
         "timeout" : 10000,
         "enableTls" : false,
         "tlsVersion" : "TLSv1.2",
