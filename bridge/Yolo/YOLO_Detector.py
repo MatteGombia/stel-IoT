@@ -28,6 +28,7 @@ class YOLO_Detector():
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         self.cap.set(cv2.CAP_PROP_FPS, 2)
+        self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 
         # Load model
         self.model = YOLO("best.pt", verbose=True)
@@ -35,6 +36,7 @@ class YOLO_Detector():
     def loop(self, thingsBoardClient):
         iteration = 0
         while iteration < 1000:  # Prevent infinite loops
+            self.cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
             success, img = self.cap.read()
             if not success:
                 print("Error: Failed to capture image")
