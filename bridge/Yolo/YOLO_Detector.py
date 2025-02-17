@@ -23,8 +23,11 @@ class YOLO_Detector():
             print("Error: Camera not found")
             exit(1)
 
-        self.cap.set(3, 1280)
-        self.cap.set(4, 720)
+        #self.cap.set(3, 1280)
+        #self.cap.set(4, 720)
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+        self.cap.set(cv2.CAP_PROP_FPS, 2)
 
         # Load model
         self.model = YOLO("best.pt", verbose=True)
